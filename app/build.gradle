@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'checkstyle'
+    id 'jacoco'
+}
+
+group = 'hexlet.code'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.assertj:assertj-core:3.19.0'
+    implementation 'io.javalin:javalin:5.5.0'
+    implementation 'io.javalin:javalin-rendering:5.5.0'
+    implementation 'org.slf4j:slf4j-simple:2.0.5'
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+    }
+}
+
+application {
+    mainClass.set("hexlet.code.App")
+}
+
+compileJava {
+    options.release = 20
+}
+
+checkstyle {
+    toolVersion '10.2'
+}
