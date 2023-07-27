@@ -1,31 +1,40 @@
-.DEFAULT_GOAL := run-dist
-
-run-dist:
-	@./build/install/app/bin/app
+setup:
+	gradle wrapper --gradle-version 8.2.1
 
 clean:
-	@./gradlew clean
+	./gradlew clean
 
 build:
-	@./gradlew clean build
+	./gradlew clean build
+
+start:
+	APP_ENV=development ./gradlew run
 
 install:
-	@./gradlew clean installDist
+	./gradlew install
 
-run:
-	@./gradlew run
+start-dist:
+	APP_ENV=production ./build/install/app/bin/app
 
-test:
-	@./gradlew test
-
-report:
-	@./gradlew jacocoTestReport
+generate-migrations:
+	./gradlew generateMigrations
 
 lint:
-	@./gradlew checkstyleMain checkstyleTest
-	
-update-deps:
-	@./gradlew useLatestVersions
+	./gradlew checkstyleMain checkstyleTest
+
+test:
+	./gradlew test
+
+report:
+	./gradlew jacocoTestReport
+
+check-updates:
+	./gradlew dependencyUpdates
+
+image-build:
+	docker build -t hexletcomponents/app:latest .
+
+image-push:
+	docker push hexletcomponents/app:latest
 
 .PHONY: build
-
