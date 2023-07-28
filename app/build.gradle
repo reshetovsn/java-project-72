@@ -26,8 +26,8 @@ dependencies {
     implementation 'org.slf4j:slf4j-simple:2.0.5'
 
     implementation 'org.thymeleaf:thymeleaf:3.1.1.RELEASE'
-    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.2.0'
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.2.0' // позволяет создавать общие макеты и переиспользовать их
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE' // добавляет в шаблоны объект temporals со множеством полезных методов по форматированию
     implementation 'org.webjars:bootstrap:5.2.3'
 
     implementation 'com.h2database:h2:2.1.214'
@@ -40,7 +40,7 @@ dependencies {
     implementation 'io.ebean:ebean-annotation:8.3' // Добавляет различные аннотации
     annotationProcessor 'io.ebean:querybean-generator:13.15.0' // Обработчик аннотаций используется для генерации компонента запроса
 
-// NOTE: ebean-ddl-generator требует старые зависимости, которых нет в java 9 и выше
+// ebean-ddl-generator требует старые зависимости, которых нет в java 9 и выше
     implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.5'
     implementation 'javax.activation:activation:1.1.1'
 }

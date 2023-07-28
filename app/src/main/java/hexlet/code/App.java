@@ -2,12 +2,31 @@ package hexlet.code;
 
 import hexlet.code.controllers.RootController;
 import io.javalin.Javalin;
+import io.javalin.rendering.template.JavalinThymeleaf;
+import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 public class App {
 
     private static int getPort() {
         String port = System.getenv().getOrDefault("PORT", "8000");
         return Integer.valueOf(port);
+    }
+
+    private static TemplateEngine getTemplateEngine() {
+        TemplateEngine templateEngine = new TemplateEngine(); // Создаём инстанс движка шаблонизатора
+        // Добавляем к нему диалекты
+        templateEngine.addDialect(new LayoutDialect());
+        templateEngine.addDialect(new Java8TimeDialect());
+        // Настраиваем преобразователь шаблонов, так, чтобы обрабатывались шаблоны в директории /templates/
+        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+        templateResolver.setPrefix("/templates/");
+
+        templateEngine.addTemplateResolver(templateResolver); // Добавляем преобразователь шаблонов к движку шаблонизатора
+
+        return templateEngine;
     }
 
     private static void addRoutes(Javalin app) {
@@ -17,6 +36,7 @@ public class App {
     public static Javalin getApp() {
         Javalin app = Javalin.create(config -> {
             config.plugins.enableDevLogging(); // Включаем логгирование
+            JavalinThymeleaf.init(getTemplateEngine()); // Подключаем настроенный шаблонизатор к фреймворку
         });
 
         addRoutes(app);
