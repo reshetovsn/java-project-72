@@ -1,6 +1,7 @@
 package hexlet.code.controllers;
 
 import hexlet.code.domain.Url;
+import hexlet.code.domain.query.QUrl;
 import io.javalin.http.Handler;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -8,9 +9,9 @@ import java.net.URL;
 public class UrlController {
 
     public static Handler addUrl = ctx -> {
-        // Получаем переменную часть пути, из которого будем извлекать url
+        // Получаем переменную часть пути, из которого будем извлекать url в нужном нам виде
         String inputUrl = ctx.formParamAsClass("url", String.class).getOrDefault(null);
-
+        // Парсинг url в виде https://example.com
         URL newUrl;
         try {
             newUrl = new URL(inputUrl);
@@ -23,13 +24,18 @@ public class UrlController {
         String finalUrl = newUrl.getProtocol() + "://" + newUrl.getAuthority();
         String finalUrlWithPort = newUrl.getProtocol() + "://" + newUrl.getAuthority() + ":" + newUrl.getPort();
 
-        long id = ctx.pathParamAsClass("id", Long.class).getOrDefault(null);
-//        Url url = new QUrl()
+        Url url = new QUrl()
+                .name.iequalTo(finalUrl)
+                .findOne();
 
-        Url urlToDB = new Url(finalUrl);
-        urlToDB.save();
-        ctx.sessionAttribute("flash", "Страница успешно добавлена");
-        ctx.redirect("/articles");
-
+        if (url != null) {
+            url.save();
+            ctx.sessionAttribute("flash", "Страница успешно добавлена");
+            ctx.redirect("/urls");
+        } else {
+            ctx.sessionAttribute("flash", "Страница уже существует");
+            ctx.sessionAttribute("flash-type", "danger");
+            ctx.redirect("/");
+        }
     };
 }
