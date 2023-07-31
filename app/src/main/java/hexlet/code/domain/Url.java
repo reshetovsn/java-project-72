@@ -1,4 +1,4 @@
-package hexlet.code.controllers;
+package hexlet.code.domain;
 
 import io.ebean.Model;
 import io.ebean.annotation.WhenCreated;
@@ -15,6 +15,10 @@ public class Url extends Model {
 
     @WhenCreated
     private Instant createdAt;
+
+    public Url(String name) {
+        this.name = name;
+    }
 
     public long getId() {
         return id;
