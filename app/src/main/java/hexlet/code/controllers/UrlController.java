@@ -24,7 +24,7 @@ public class UrlController {
         String finalUrlWithPort = newUrl.getProtocol() + "://" + newUrl.getAuthority() + ":" + newUrl.getPort();
 
         long id = ctx.pathParamAsClass("id", Long.class).getOrDefault(null);
-        Url url = new Qurl()
+//        Url url = new QUrl()
 
         Url urlToDB = new Url(finalUrl);
         urlToDB.save();
