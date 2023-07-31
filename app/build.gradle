@@ -35,7 +35,7 @@ dependencies {
 
     implementation 'io.ebean:ebean:13.15.0'
     implementation 'io.ebean:ebean-ddl-generator:13.15.0' // Позволяет генерировать миграции
-    implementation 'io.ebean:ebean-querybean:12.15.1' // Query builder. Позволяет строить запросы
+    implementation 'io.ebean:ebean-querybean:13.15.0' // Query builder. Позволяет строить запросы
     implementation 'io.ebean:ebean-migration:13.7.0' // Позволяет авт выполнять миграции
     implementation 'io.ebean:ebean-annotation:8.3' // Добавляет различные аннотации
     annotationProcessor 'io.ebean:querybean-generator:13.15.0' // Обработчик аннотаций используется для генерации компонента запроса
