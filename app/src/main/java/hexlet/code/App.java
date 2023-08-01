@@ -48,7 +48,7 @@ public class App {
         app.routes(() -> {
             path("urls", () -> {
                 post(UrlController.addUrl);
-                get("index", UrlController.listUrls);
+                get(UrlController.showUrl);
             });
         });
 
