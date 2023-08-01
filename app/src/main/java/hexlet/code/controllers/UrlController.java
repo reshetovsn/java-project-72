@@ -63,7 +63,7 @@ public class UrlController {
 
         ctx.attribute("urls", urls);
         ctx.attribute("page", page);
-        ctx.render("urls/index.html");
+        ctx.render("/urls/index.html");
     };
 
     public static Handler showUrl = ctx -> {
@@ -74,6 +74,6 @@ public class UrlController {
                 .findOne();
 
         ctx.attribute("url", url);
-        ctx.render("urls/show.html");
+        ctx.render("/urls/show.html");
     };
 }
