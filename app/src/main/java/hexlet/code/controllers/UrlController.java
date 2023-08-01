@@ -37,13 +37,15 @@ public class UrlController {
                 .findOne();
 
         if (url != null) {
-            url.save();
+            Url validUrl = new Url(finalUrl);
+            validUrl.save();
             ctx.sessionAttribute("flash", "Страница успешно добавлена");
+            ctx.sessionAttribute("flash-type", "success");
             ctx.redirect("/urls");
         } else {
             ctx.sessionAttribute("flash", "Страница уже существует");
-            ctx.sessionAttribute("flash-type", "danger");
-            ctx.redirect("/");
+            ctx.sessionAttribute("flash-type", "info");
+            ctx.redirect("/urls");
         }
     };
 
