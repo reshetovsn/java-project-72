@@ -8,8 +8,9 @@ import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
-
-import static io.javalin.apibuilder.ApiBuilder.*;
+import static io.javalin.apibuilder.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.post;
+import static javax.swing.UIManager.get;
 
 
 public class App {
@@ -29,15 +30,18 @@ public class App {
 
     private static TemplateEngine getTemplateEngine() {
         TemplateEngine templateEngine = new TemplateEngine(); // Создаём инстанс движка шаблонизатора
-        // Добавляем к нему диалекты
-        templateEngine.addDialect(new LayoutDialect());
-        templateEngine.addDialect(new Java8TimeDialect());
+
         // Настраиваем преобразователь шаблонов, так, чтобы обрабатывались шаблоны в директории /templates/
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setPrefix("/templates/");
+        templateResolver.setCharacterEncoding("UTF-8");
 
         // Добавляем преобразователь шаблонов к движку шаблонизатора
         templateEngine.addTemplateResolver(templateResolver);
+
+        // Добавляем к нему диалекты
+        templateEngine.addDialect(new LayoutDialect());
+        templateEngine.addDialect(new Java8TimeDialect());
 
         return templateEngine;
     }
@@ -49,12 +53,9 @@ public class App {
             path("urls", () -> {
                 post(UrlController.addUrl);
                 get(UrlController.listUrls);
-            });
-        });
-
-        app.routes(() -> {
-            path("urls/{id}", () -> {
-                get(UrlController.showUrl);
+                path("{id}", () -> {
+                    get(UrlController.showUrl);
+                });
             });
         });
     }

@@ -13,6 +13,7 @@ public class UrlController {
     public static Handler addUrl = ctx -> {
         // Получаем переменную часть пути, из которого будем извлекать url в нужном нам виде
         String inputUrl = ctx.formParamAsClass("url", String.class).getOrDefault(null);
+
         // Парсинг url в виде https://example.com
         URL newUrl;
         try {
@@ -23,7 +24,7 @@ public class UrlController {
             ctx.redirect("/");
             return;
         }
-        String finalUrl = String
+        String parsedUrl = String
                 .format(
                         "%s://%s%s",
                         newUrl.getProtocol(),
@@ -32,12 +33,12 @@ public class UrlController {
                 )
                 .toLowerCase();
 
-        Url url = new QUrl()
-                .name.iequalTo(finalUrl)
-                .findOne();
+        boolean findUrl = new QUrl()
+                .name.equalTo(parsedUrl)
+                .exists();
 
-        if (url != null) {
-            Url validUrl = new Url(finalUrl);
+        if (findUrl) {
+            Url validUrl = new Url(parsedUrl);
             validUrl.save();
             ctx.sessionAttribute("flash", "Страница успешно добавлена");
             ctx.sessionAttribute("flash-type", "success");
