@@ -38,10 +38,10 @@
                 <nav>
                     <ul class="pagination justify-content-center">
                         <li class="page-item">
-                            <a class="page-link" th:href="@{/urls(page=(${page < 2}) ? 1 : (${page - 1}))}">Prev</a>
+                            <a class="page-link" th:href="@{/urls(page=(${page < 2}) ? 1 : (${page - 1}))}">Предыдущая</a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" th:href="@{/urls(page=${page + 1})}">Next</a>
+                            <a class="page-link" th:href="@{/urls(page=${page + 1})}">Следующая</a>
                         </li>
                     </ul>
                 </nav>
