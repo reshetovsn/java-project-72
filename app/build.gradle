@@ -78,3 +78,7 @@ task generateMigrations(type: JavaExec) {
 }
 
 sourceSets.main.java.srcDirs = ['src/main/java', 'build/generated/sources/annotationProcessor/java/main']
+
+checkstyleMain.source = "src/main/java"
+
+checkstyleMain.exclude '**/build/generated/sources/annotationProcessor/java/main/**'
