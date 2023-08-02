@@ -49,7 +49,6 @@ public final class App {
 
     private static void addRoutes(Javalin app) {
         app.get("/", RootController.welcome);
-//        app.get("/urls", UrlController.listUrls);
 
         app.routes(() -> {
             path("urls", () -> {
@@ -63,6 +62,7 @@ public final class App {
                 get(UrlController.showUrl);
             });
         });
+
     }
 
     public static Javalin getApp() {

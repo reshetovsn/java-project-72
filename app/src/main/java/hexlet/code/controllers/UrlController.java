@@ -35,11 +35,11 @@ public final class UrlController {
                 )
                 .toLowerCase();
 
-        boolean findUrl = new QUrl()
+        boolean foundUrl = new QUrl()
                 .name.equalTo(parsedUrl)
                 .exists();
 
-        if (findUrl) {
+        if (foundUrl) {
             Url validUrl = new Url(parsedUrl);
             validUrl.save();
             ctx.sessionAttribute("flash", "Страница успешно добавлена");
