@@ -2,50 +2,50 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layouts/application.html}">
-
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
     <title>Сайты</title>
 </head>
-    <section layout:fragment="header">
-        <div class="container-lg mt-5">
-            <h1>Сайты</h1>
+<section layout:fragment="header">
+    <div class="container-lg mt-5">
+        <h1>Сайты</h1>
 
-            <table class="table table-bordered table-hover mt-3">
-                <thead>
-                <tr>
-                    <th class="col-1">ID</th>
-                    <th>Имя</th>
-                    <th class="col-2">Последняя проверка</th>
-                    <th class="col-1">Код ответа</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="url : ${urls}"
-                    th:object="${url}">
+        <table class="table table-bordered table-hover mt-3">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имя</th>
+                <th>Последняя проверка</th>
+                <th>Код ответа</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="url : ${urls}"
+                th:object="${url}">
 
-                    <td th:text="*{getId()}"></td>
-                    <td>
-                        <a th:text="*{getName()}"
-                           th:href="@{/urls/{id}(id=*{getId()})}">
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <div class="container">
-                <nav>
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link" th:href="@{/urls(page=(${page < 2}) ? 1 : (${page - 1}))}">Предыдущая</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" th:href="@{/urls(page=${page + 1})}">Следующая</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+                <td th:text="*{getId()}"></td>
+                <td>
+                    <a th:href="@{/urls/{id}(id=*{getId()})}"
+                       th:text="*{getName()}"
+                       style="color: #393E46">
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="container">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/urls(page=(${page < 2}) ? 1 : (${page - 1}))}">Назад</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/urls(page=${page + 1})}">Вперед</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-    </section>
+    </div>
+</section>
 </html>
