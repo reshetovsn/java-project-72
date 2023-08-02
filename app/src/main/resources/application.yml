@@ -14,5 +14,5 @@ ebean:
     run: true
     generate: true
     seedSql: seed.sql
-  # migration:
-  #   run: true
+    #migration:
+      #run: true
