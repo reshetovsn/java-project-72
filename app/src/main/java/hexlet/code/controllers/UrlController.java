@@ -7,8 +7,10 @@ import io.javalin.http.Handler;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-public class UrlController {
+public final class UrlController {
 
     public static Handler addUrl = ctx -> {
         // Получаем переменную часть пути, из которого будем извлекать url в нужном нам виде
@@ -66,7 +68,7 @@ public class UrlController {
 
         ctx.attribute("urls", urls);
         ctx.attribute("page", page);
-        ctx.render("/urls/index.html");
+        ctx.render("urls/index.html");
     };
 
     public static Handler showUrl = ctx -> {

@@ -8,12 +8,13 @@ import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+
 import static io.javalin.apibuilder.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.post;
-import static javax.swing.UIManager.get;
 
 
-public class App {
+public final class App {
 
     private static int getPort() {
         String port = System.getenv().getOrDefault("PORT", "8000");
@@ -48,14 +49,18 @@ public class App {
 
     private static void addRoutes(Javalin app) {
         app.get("/", RootController.welcome);
+//        app.get("/urls", UrlController.listUrls);
 
         app.routes(() -> {
             path("urls", () -> {
                 post(UrlController.addUrl);
                 get(UrlController.listUrls);
-                path("{id}", () -> {
-                    get(UrlController.showUrl);
-                });
+            });
+        });
+
+        app.routes(() -> {
+            path("urls/{id}", () -> {
+                get(UrlController.showUrl);
             });
         });
     }
