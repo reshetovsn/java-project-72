@@ -61,6 +61,7 @@ class AppTest {
 
             assertThat(response.getStatus()).isEqualTo(200);
             assertThat(body).contains("https://youtube.com");
+            assertThat(body).doesNotContain("https://yandex.ru");
         }
 
         @Test
