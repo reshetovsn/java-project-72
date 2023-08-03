@@ -1,6 +1,0 @@
-2023-08-02 19:02:00 jdbc[4]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ARTICLE" not found; SQL statement:
-alter table article drop constraint if exists fk_article_category_id [42102-214]
-2023-08-03 18:27:35 jdbc[4]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "URL_CHECK" not found; SQL statement:
-alter table url_check drop constraint if exists fk_url_check_url_id [42102-214]
