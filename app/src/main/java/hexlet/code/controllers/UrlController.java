@@ -1,7 +1,9 @@
 package hexlet.code.controllers;
 
 import hexlet.code.domain.Url;
+import hexlet.code.domain.UrlCheck;
 import hexlet.code.domain.query.QUrl;
+import hexlet.code.domain.query.QUrlCheck;
 import io.ebean.PagedList;
 import io.javalin.http.Handler;
 import java.net.MalformedURLException;
@@ -77,6 +79,19 @@ public final class UrlController {
                 .findOne();
 
         ctx.attribute("url", url);
-        ctx.render("/urls/show.html");
+        ctx.render("urls/show.html");
+
+        List<UrlCheck> urlChecks = new QUrlCheck()
+                .url.equalTo(url)
+                .orderBy()
+                .id.asc()
+                .findList();
+
+        ctx.attribute("urlChecks", urlChecks);
+        ctx.attribute("url", url);
+        ctx.render("urls/show.html");
     };
+
+//    public static Handler checkUrl = ctx -> {
+//    };
 }
