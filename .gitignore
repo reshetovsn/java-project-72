@@ -16,3 +16,7 @@ app.iml
 out/
 /app/*.json
 /app/*.yml
+db-drop-all.sql
+db-create-all.sql
+hexlet.mv.db
+hexlet.trace.db
