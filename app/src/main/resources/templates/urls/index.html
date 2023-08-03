@@ -3,10 +3,9 @@
       xmlns:th="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layouts/application.html}">
 <head>
-    <meta charset="UTF-8">
     <title>Сайты</title>
 </head>
-<section layout:fragment="header">
+<section layout:fragment="content">
     <div class="container-lg mt-5">
         <h1>Сайты</h1>
 
@@ -26,10 +25,11 @@
                 <td th:text="*{getId()}"></td>
                 <td>
                     <a th:href="@{/urls/{id}(id=*{getId()})}"
-                       th:text="*{getName()}"
-                       style="color: #393E46">
+                       th:text="*{getName()}">
                     </a>
                 </td>
+<!--                <td th:text="*{getUrlChecks().isEmpty() ? '' : getUrlChecks().getCreatedAt()}"></td>-->
+<!--                <td th:text="*{getUrlChecks().isEmpty() ? '' : getUrlChecks().getStatusCode()}"></td>-->
             </tr>
             </tbody>
         </table>

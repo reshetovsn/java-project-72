@@ -4,8 +4,6 @@
       layout:decorate="~{layouts/application.html}">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Проверка</title>
 </head>
 
@@ -45,7 +43,14 @@
                     <th class="col-2">Дата проверки</th>
                 </tr></thead>
                 <tbody>
-
+                <tr th:each="urlCheck : ${urlChecks}" th:object="${urlCheck}">
+                    <td th:text="${urlCheck.getId()}"></td>
+                    <td th:text="${urlCheck.getStatusCode()}"></td>
+                    <td th:text="${urlCheck.getTitle()}"></td>
+                    <td th:text="${urlCheck.getH1()}"></td>
+                    <td th:text="${urlCheck.getDescription()}"></td>
+                    <td th:text="${urlCheck.getCreatedAt()}"></td>
+                </tr>
                 </tbody>
             </table>
         </div>
