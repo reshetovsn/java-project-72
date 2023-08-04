@@ -21,7 +21,7 @@ public class Url extends Model {
     private Instant createdAt;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<UrlCheck> urlCheck;
+    private List<UrlCheck> urlChecks;
 
     public Url(String name) {
         this.name = name;
@@ -39,7 +39,7 @@ public class Url extends Model {
         return createdAt;
     }
 
-    public List<UrlCheck> getUrlCheck() {
-        return urlCheck;
+    public List<UrlCheck> getUrlChecks() {
+        return urlChecks;
     }
 }
