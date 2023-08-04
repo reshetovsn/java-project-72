@@ -4,26 +4,26 @@
       layout:decorate="~{layouts/application.html}">
 
 <head>
-    <title>Проверка</title>
+    <title>Проверка страниц</title>
 </head>
 
     <section layout:fragment="content">
         <div class="container-lg mt-5">
-            <h1 th:text="'Страница ' + ${url.getName()}"></h1>
+            <h1 th:text="'Страница ' + *{url.getName()}"></h1>
 
             <table class="table table-bordered table-hover mt-3">
                 <tbody>
                 <tr>
                     <td>ID</td>
-                    <td th:text="${url.getId()}"></td>
+                    <td th:text="*{url.getId()}"></td>
                 </tr>
                 <tr>
                     <td>Имя</td>
-                    <td th:text="${url.getName()}"></td>
+                    <td th:text="*{url.getName()}"></td>
                 </tr>
                 <tr>
                     <td>Дата создания</td>
-                    <td th:text="${url.getCreatedAt()}"></td>
+                    <td th:text="*{url.getCreatedAt()}"></td>
                 </tr>
                 </tbody>
             </table>
@@ -43,13 +43,13 @@
                     <th class="col-2">Дата проверки</th>
                 </tr></thead>
                 <tbody>
-                <tr th:each="urlCheck : ${urlChecks}" th:object="${urlCheck}">
-                    <td th:text="${urlCheck.getId()}"></td>
-                    <td th:text="${urlCheck.getStatusCode()}"></td>
-                    <td th:text="${urlCheck.getTitle()}"></td>
-                    <td th:text="${urlCheck.getH1()}"></td>
-                    <td th:text="${urlCheck.getDescription()}"></td>
-                    <td th:text="${urlCheck.getCreatedAt()}"></td>
+                <tr th:each="urlCheck : ${urlChecks}">
+                    <td th:text="*{urlCheck.getId()}"></td>
+                    <td th:text="*{urlCheck.getStatusCode()}"></td>
+                    <td th:text="*{urlCheck.getTitle()}"></td>
+                    <td th:text="*{urlCheck.getH1()}"></td>
+                    <td th:text="*{urlCheck.getDescription()}"></td>
+                    <td th:text="*{urlCheck.getCreatedAt()}"></td>
                 </tr>
                 </tbody>
             </table>

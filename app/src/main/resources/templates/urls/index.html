@@ -2,9 +2,11 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layouts/application.html}">
+
 <head>
-    <title>Сайты</title>
+    <title>Список сайтов</title>
 </head>
+
 <section layout:fragment="content">
     <div class="container-lg mt-5">
         <h1>Сайты</h1>
@@ -19,17 +21,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="url : ${urls}"
-                th:object="${url}">
-
-                <td th:text="*{getId()}"></td>
+            <tr th:each="url : ${urls}">
+                <td th:text="*{url.getId()}"></td>
                 <td>
-                    <a th:href="@{/urls/{id}(id=*{getId()})}"
-                       th:text="*{getName()}">
+                    <a th:href="@{/urls/{id}(id=*{url.getId()})}"
+                       th:text="*{url.getName()}">
                     </a>
                 </td>
-<!--                <td th:text="*{getUrlChecks().isEmpty() ? '' : getUrlChecks().getCreatedAt()}"></td>-->
-<!--                <td th:text="*{getUrlChecks().isEmpty() ? '' : getUrlChecks().getStatusCode()}"></td>-->
+                <td th:text="*{url.getUrlCheck().isEmpty() ? '' : url.getUrlCheck().get(url.getUrlCheck().size() - 1).getCreatedAt()}"></td>
+                <td th:text="*{url.getUrlCheck().isEmpty() ? '' : url.getUrlCheck().get(url.getUrlCheck().size() - 1).getStatusCode()}"></td>
             </tr>
             </tbody>
         </table>
@@ -38,10 +38,14 @@
             <nav>
                 <ul class="pagination justify-content-center">
                     <li class="page-item">
-                        <a class="page-link" th:href="@{/urls(page=(${page < 2}) ? 1 : (${page - 1}))}">Назад</a>
+                        <a class="page-link"
+                           th:href="@{/urls(page=(${page < 2}) ? 1 : (${page - 1}))}">Назад
+                        </a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" th:href="@{/urls(page=${page + 1})}">Вперед</a>
+                        <a class="page-link"
+                           th:href="@{/urls(page=${page + 1})}">Вперед
+                        </a>
                     </li>
                 </ul>
             </nav>
