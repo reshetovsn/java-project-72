@@ -93,6 +93,12 @@ public final class UrlController {
     };
 
     public static Handler checkUrl = ctx -> {
-        ctx.redirect("/urls/{id}/checks");
+        long id = ctx.pathParamAsClass("id", Long.class).getOrDefault(null);
+
+        Url url = new QUrl()
+                .id.equalTo(id)
+                .findOne();
+
+        ctx.redirect("/urls/" + id + "/checks");
     };
 }
