@@ -20,35 +20,35 @@ public final class UrlController {
         URL newUrl;
         try {
             newUrl = new URL(inputUrl);
+            String parsedUrl = String
+                    .format(
+                            "%s://%s%s",
+                            newUrl.getProtocol(),
+                            newUrl.getHost(),
+                            newUrl.getPort() == -1 ? "" : ":" + newUrl.getPort()
+                    )
+                    .toLowerCase();
+
+            Url foundUrl = new QUrl()
+                    .name.equalTo(parsedUrl)
+                    .findOne();
+
+            if (foundUrl == null) {
+                Url url = new Url(parsedUrl);
+                url.save();
+                ctx.sessionAttribute("flash", "Страница успешно добавлена");
+                ctx.sessionAttribute("flash-type", "success");
+                ctx.redirect("/urls");
+            } else {
+                ctx.sessionAttribute("flash", "Страница уже существует");
+                ctx.sessionAttribute("flash-type", "info");
+                ctx.redirect("/urls");
+            }
+
         } catch (MalformedURLException e) {
             ctx.sessionAttribute("flash", "Некорректный URL");
             ctx.sessionAttribute("flash-type", "danger");
             ctx.redirect("/");
-            return;
-        }
-        String parsedUrl = String
-                .format(
-                        "%s://%s%s",
-                        newUrl.getProtocol(),
-                        newUrl.getHost(),
-                        newUrl.getPort() == -1 ? "" : ":" + newUrl.getPort()
-                )
-                .toLowerCase();
-
-        boolean foundUrl = new QUrl()
-                .name.equalTo(parsedUrl)
-                .exists();
-
-        if (foundUrl) {
-            Url validUrl = new Url(parsedUrl);
-            validUrl.save();
-            ctx.sessionAttribute("flash", "Страница успешно добавлена");
-            ctx.sessionAttribute("flash-type", "success");
-            ctx.redirect("/urls");
-        } else {
-            ctx.sessionAttribute("flash", "Страница уже существует");
-            ctx.sessionAttribute("flash-type", "info");
-            ctx.redirect("/urls");
         }
     };
 
