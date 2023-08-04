@@ -60,7 +60,7 @@ public final class App {
         app.routes(() -> {
             path("urls/{id}", () -> {
                 get(UrlController.showUrl);
-//                post("checks", UrlController.checkUrl);
+                post("checks", UrlController.checkUrl);
             });
         });
 

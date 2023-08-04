@@ -92,6 +92,7 @@ public final class UrlController {
         ctx.render("urls/show.html");
     };
 
-//    public static Handler checkUrl = ctx -> {
-//    };
+    public static Handler checkUrl = ctx -> {
+        ctx.redirect("/urls/{id}/checks");
+    };
 }
