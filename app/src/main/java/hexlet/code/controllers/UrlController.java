@@ -6,6 +6,13 @@ import hexlet.code.domain.query.QUrl;
 import hexlet.code.domain.query.QUrlCheck;
 import io.ebean.PagedList;
 import io.javalin.http.Handler;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
+import kong.unirest.UnirestException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -16,7 +23,7 @@ public final class UrlController {
         // Получаем переменную часть пути, из которого будем извлекать url в нужном нам виде
         String inputUrl = ctx.formParamAsClass("url", String.class).getOrDefault(null);
 
-        // Парсинг url в виде https://example.com
+        // Парсинг url в вид https://example.com
         URL newUrl;
         try {
             newUrl = new URL(inputUrl);
@@ -99,6 +106,36 @@ public final class UrlController {
                 .id.equalTo(id)
                 .findOne();
 
-        ctx.redirect("/urls/" + id + "/checks");
+        try {
+            assert url != null;
+            HttpResponse<String> response = Unirest
+                    .get(url.getName())
+                    .asString();
+
+            String body = response.getBody();
+            Document doc = Jsoup.parse(body);
+
+            int statusCode = response.getStatus();
+            String title = doc.title();
+
+            Element tagH1 = doc.selectFirst("h1");
+            String h1 = tagH1 == null ? "" : tagH1.text();
+
+            Element tagMetaDescription = doc.selectFirst("meta[name=description]");
+            String description = tagMetaDescription == null ? "" : tagMetaDescription.attr("content");
+
+            UrlCheck urlCheck = new UrlCheck(statusCode, title, h1, description);
+            url.getUrlChecks().add(urlCheck);
+            url.save();
+
+            ctx.sessionAttribute("flash", "Страница успешно проверена");
+            ctx.sessionAttribute("flash-type", "success");
+
+        } catch (UnirestException e) {
+            ctx.sessionAttribute("flash", "Некорректный URL");
+            ctx.sessionAttribute("flash-type", "danger");
+        }
+
+        ctx.redirect("/urls/" + id);
     };
 }
