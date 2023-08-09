@@ -1,9 +1,15 @@
 package hexlet.code;
 
+import hexlet.code.domain.Url;
+import hexlet.code.domain.UrlCheck;
+import hexlet.code.domain.query.QUrl;
 import io.ebean.DB;
+import kong.unirest.Empty;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,24 +21,37 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.javalin.Javalin;
 import io.ebean.Database;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+
 class AppTest {
 
     private static Javalin app;
     private static String baseUrl;
     private static Database database;
+    private static MockWebServer mockServer;
 
     @BeforeAll
-    public static void beforeAll() {
+    public static void beforeAll() throws IOException {
         app = App.getApp(); // Получаем инстанс приложения
         app.start(0); // Запускаем приложение на рандомном порту
         int port = app.port(); // Получаем порт, на которм запустилось приложение
         baseUrl = "http://localhost:" + port; // Формируем базовый URL
         database = DB.getDefault();
+
+        mockServer = new MockWebServer();
+
+        String testPage = Files.readString(Paths.get("src/test/resources/testPage.html"));
+        mockServer.enqueue(new MockResponse().setBody(testPage));
+        mockServer.start();
     }
 
     @AfterAll
-    public static void afterAll() {
+    public static void afterAll() throws IOException {
         app.stop();
+        mockServer.shutdown();
     }
 
     @BeforeEach
@@ -45,7 +64,9 @@ class AppTest {
     class RootTest {
         @Test
         void testIndex() {
-            HttpResponse<String> response = Unirest.get(baseUrl).asString();
+            HttpResponse<String> response = Unirest
+                    .get(baseUrl)
+                    .asString();
             assertThat(response.getStatus()).isEqualTo(200);
         }
     }
@@ -75,6 +96,37 @@ class AppTest {
             assertThat(body).contains("https://youtube.com");
             assertThat(body).contains("2023-07-31");
         }
-    }
 
+        @Test
+        void testCheckUrl() {
+            // Вызвав на созданном инстансе сервера метод mockServer.url("/").toString(),
+            // можно получить адрес сайта, который нужно будет использовать в тестах
+            String mockUrl = mockServer.url("/").toString().replaceAll("/$", "");
+
+            HttpResponse<Empty> responsePost = Unirest
+                    .post(baseUrl + "/urls")
+                    .field("url", mockUrl)
+                    .asEmpty();
+
+            assertThat(responsePost.getStatus()).isEqualTo(302);
+
+            Url url = new QUrl()
+                    .name.equalTo(mockUrl)
+                    .findOne();
+
+            assertThat(url).isNotNull();
+            assertThat(url.getId()).isEqualTo(4);
+
+            HttpResponse<Empty> responseCheck = Unirest
+                    .post(baseUrl + "/urls/4/checks")
+                    .asEmpty();
+
+            assertThat(responseCheck.getStatus()).isEqualTo(302);
+
+            UrlCheck urlCheck = url.getUrlChecks().get(0);
+            assertThat(urlCheck.getStatusCode()).isEqualTo(200);
+            assertThat(urlCheck.getTitle()).isEqualTo("title example");
+            assertThat(urlCheck.getH1()).isEqualTo("header example");
+        }
+    }
 }
