@@ -3,20 +3,23 @@ package hexlet.code.domain;
 import io.ebean.Model;
 import io.ebean.annotation.WhenCreated;
 
-import javax.persistence.Id;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.GenerationType;
 
 import java.time.Instant;
 
 @Entity
 public class UrlCheck extends Model {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private int statusCode;
-    private String title;
-    private String h1;
+    private final int statusCode;
+    private final String title;
+    private final String h1;
     @Lob
     private String description;
     @WhenCreated
@@ -55,7 +58,4 @@ public class UrlCheck extends Model {
         return createdAt;
     }
 
-    public Url getUrl() {
-        return url;
-    }
 }
