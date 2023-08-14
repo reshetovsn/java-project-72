@@ -54,16 +54,14 @@ public final class App {
             path("urls", () -> {
                 post(UrlController.addUrl);
                 get(UrlController.listUrls);
+                path("{id}", () -> {
+                    get(UrlController.showUrl);
+                    path("checks", () -> {
+                        post(UrlController.checkUrl);
+                    });
+                });
             });
         });
-
-        app.routes(() -> {
-            path("urls/{id}", () -> {
-                get(UrlController.showUrl);
-                post("checks", UrlController.checkUrl);
-            });
-        });
-
     }
 
     public static Javalin getApp() {
