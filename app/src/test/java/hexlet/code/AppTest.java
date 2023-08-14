@@ -196,6 +196,12 @@ class AppTest {
             assertThat(url).isNotNull();
             assertThat(url.getName()).isEqualTo(mockUrl);
 
+            HttpResponse responseCheck = Unirest
+                    .post(baseUrl + "/urls/" + url.getId() + "/checks")
+                    .asEmpty();
+
+            assertThat(responseCheck.getStatus()).isEqualTo(302);
+
             UrlCheck urlCheck = url.getUrlChecks().get(0);
             assertThat(urlCheck.getStatusCode()).isEqualTo(200);
             assertThat(urlCheck.getTitle()).isEqualTo("title example");
