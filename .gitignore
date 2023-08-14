@@ -20,3 +20,4 @@ db-drop-all.sql
 db-create-all.sql
 hexlet.mv.db
 hexlet.trace.db
+/app/*.db

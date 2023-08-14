@@ -98,6 +98,85 @@ class AppTest {
         }
 
         @Test
+        void testPageExist() {
+            String inputUrl = "https://ru.hexlet.io";
+
+            HttpResponse<Empty> responsePost = Unirest
+                    .post(baseUrl + "/urls")
+                    .field("url", inputUrl)
+                    .asEmpty();
+
+            assertThat(responsePost.getStatus()).isEqualTo(302);
+
+            HttpResponse<String> response = Unirest
+                    .get(baseUrl + "/urls")
+                    .asString();
+
+            String content = response.getBody();
+
+            assertThat(response.getStatus()).isEqualTo(200);
+            assertThat(content).contains(inputUrl);
+            assertThat(content).contains("Страница уже существует");
+        }
+
+        @Test
+        void testValidPage() {
+            String inputUrl = "https://ya.ru";
+
+            HttpResponse<Empty> responsePost = Unirest
+                    .post(baseUrl + "/urls")
+                    .field("url", inputUrl)
+                    .asEmpty();
+
+            assertThat(responsePost.getStatus()).isEqualTo(302);
+
+            HttpResponse<String> response = Unirest
+                    .get(baseUrl + "/urls")
+                    .asString();
+
+            String content = response.getBody();
+
+            assertThat(response.getStatus()).isEqualTo(200);
+            assertThat(content).contains(inputUrl);
+            assertThat(content).contains("Страница успешно добавлена");
+
+            Url addedUrl = new QUrl()
+                    .name.equalTo(inputUrl)
+                    .findOne();
+
+            assertThat(addedUrl).isNotNull();
+            assertThat(addedUrl.getName()).isEqualTo(inputUrl);
+        }
+
+        @Test
+        void testInvalidPage() {
+            String inputUrl = "ya.ru";
+
+            HttpResponse<Empty> responsePost = Unirest
+                    .post(baseUrl + "/urls")
+                    .field("url", inputUrl)
+                    .asEmpty();
+
+            assertThat(responsePost.getStatus()).isEqualTo(302);
+
+            HttpResponse<String> response = Unirest
+                    .get(baseUrl + "/urls")
+                    .asString();
+
+            String content = response.getBody();
+
+            assertThat(response.getStatus()).isEqualTo(200);
+            assertThat(content).doesNotContain(inputUrl);
+            assertThat(content).contains("Некорректный URL");
+
+            Url actualUrl = new QUrl()
+                    .name.equalTo(inputUrl)
+                    .findOne();
+
+            assertThat(actualUrl).isNull();
+        }
+
+        @Test
         void testCheckUrl() {
             // Вызвав на созданном инстансе сервера метод mockServer.url("/").toString(),
             // можно получить адрес сайта, который нужно будет использовать в тестах
@@ -115,18 +194,13 @@ class AppTest {
                     .findOne();
 
             assertThat(url).isNotNull();
-            assertThat(url.getId()).isEqualTo(4);
-
-            HttpResponse<Empty> responseCheck = Unirest
-                    .post(baseUrl + "/urls/4/checks")
-                    .asEmpty();
-
-            assertThat(responseCheck.getStatus()).isEqualTo(302);
+            assertThat(url.getName()).isEqualTo(mockUrl);
 
             UrlCheck urlCheck = url.getUrlChecks().get(0);
             assertThat(urlCheck.getStatusCode()).isEqualTo(200);
             assertThat(urlCheck.getTitle()).isEqualTo("title example");
             assertThat(urlCheck.getH1()).isEqualTo("header example");
+            assertThat(urlCheck.getDescription()).isEqualTo("some description");
         }
     }
 }
