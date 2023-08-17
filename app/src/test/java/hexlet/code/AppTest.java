@@ -3,7 +3,9 @@ package hexlet.code;
 import hexlet.code.domain.Url;
 import hexlet.code.domain.UrlCheck;
 import hexlet.code.domain.query.QUrl;
+import hexlet.code.domain.query.QUrlCheck;
 import io.ebean.DB;
+import io.javalin.http.NotFoundResponse;
 import kong.unirest.Empty;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
@@ -87,9 +89,20 @@ class AppTest {
 
         @Test
         void testShow() {
+            String inputUrl = "https://youtube.com";
+
+            Url actualUrl = new QUrl()
+                    .name.equalTo(inputUrl)
+                    .findOne();
+
+            if (actualUrl == null) {
+                throw new NotFoundResponse();
+            }
+
             HttpResponse<String> response = Unirest
-                    .get(baseUrl + "/urls/1")
+                    .get(baseUrl + "/urls/" + actualUrl.getId())
                     .asString();
+
             String body = response.getBody();
 
             assertThat(response.getStatus()).isEqualTo(200);
@@ -196,7 +209,7 @@ class AppTest {
             assertThat(url).isNotNull();
             assertThat(url.getName()).isEqualTo(mockUrl);
 
-            HttpResponse responseCheck = Unirest
+            HttpResponse<Empty> responseCheck = Unirest
                     .post(baseUrl + "/urls/" + url.getId() + "/checks")
                     .asEmpty();
 
@@ -207,6 +220,17 @@ class AppTest {
             assertThat(urlCheck.getTitle()).isEqualTo("title example");
             assertThat(urlCheck.getH1()).isEqualTo("header example");
             assertThat(urlCheck.getDescription()).isEqualTo("some description");
+
+            UrlCheck actualCheckUrl = new QUrlCheck()
+                    .url.urlChecks.equalTo(urlCheck)
+                    .orderBy()
+                    .createdAt.desc()
+                    .findOne();
+
+            assertThat(actualCheckUrl).isNotNull();
+            assertThat(actualCheckUrl.getTitle()).isEqualTo("title example");
+            assertThat(actualCheckUrl.getH1()).isEqualTo("header example");
+            assertThat(actualCheckUrl.getDescription()).isEqualTo("some description");
         }
     }
 }
