@@ -112,7 +112,7 @@ class AppTest {
 
         @Test
         void testPageExist() {
-            String inputUrl = "https://ru.hexlet.io";
+            String inputUrl = "https://gmail.com";
 
             HttpResponse<Empty> responsePost = Unirest
                     .post(baseUrl + "/urls")
