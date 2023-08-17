@@ -21,22 +21,22 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="url : ${urls}">
-                <td th:text="*{url.getId()}"></td>
+            <tr th:each="url : ${urls}" th:object="${url}">
+                <td th:text="${url.getId()}"></td>
                 <td>
-                    <a th:href="@{/urls/{id}(id=*{url.getId()})}"
-                       th:text="*{url.getName()}">
+                    <a th:href="@{/urls/{id}(id=${url.getId()})}"
+                       th:text="${url.getName()}">
                     </a>
                 </td>
-                <td th:text="*{url.getUrlChecks().isEmpty() ? '' : url.getUrlChecks().get(url.getUrlChecks().size() - 1).getCreatedAt()}"></td>
-                <td th:text="*{url.getUrlChecks().isEmpty() ? '' : url.getUrlChecks().get(url.getUrlChecks().size() - 1).getStatusCode()}"></td>
+                <td th:text="${url.getUrlChecks().isEmpty() ? '' : url.getUrlChecks().get(url.getUrlChecks().size() - 1).getCreatedAt()}"></td>
+                <td th:text="${url.getUrlChecks().isEmpty() ? '' : url.getUrlChecks().get(url.getUrlChecks().size() - 1).getStatusCode()}"></td>
             </tr>
             </tbody>
         </table>
 
         <div class="container">
             <nav>
-                <ul class="pagination justify-content-center">
+                <ul class="pagination justify-content-center mt-5">
                     <li class="page-item">
                         <a class="page-link"
                            th:href="@{/urls(page=(${page < 2}) ? 1 : (${page - 1}))}">Назад
