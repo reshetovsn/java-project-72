@@ -6,5 +6,4 @@
 #### Link to Website
 https://pagesvalidator.onrender.com  
 Cайт, который анализирует указанные страницы на SEO пригодность.  
-Сделан по принципам MVC-архитектуры.  
-Stack: Javalin, ORM(ebean), PostgreSQL, Bootstrap, Thymeleaf, HTML5, JUnit.
+Stack: Фреймворк Javalin (Маршрутизация, Представление), ORM Ebean, БД PostgreSQL, Фронт (Bootstrap, Thymeleaf, HTML5), JUnit (Интеграционное тестирование).
