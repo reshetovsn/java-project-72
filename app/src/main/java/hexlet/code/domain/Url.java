@@ -13,7 +13,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
-public class Url extends Model {
+public final class Url extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
