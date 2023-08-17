@@ -221,6 +221,7 @@ class AppTest {
             assertThat(urlCheck.getH1()).isEqualTo("header example");
             assertThat(urlCheck.getDescription()).isEqualTo("some description");
 
+            // Проверка, что в БД данные записались
             UrlCheck actualCheckUrl = new QUrlCheck()
                     .url.urlChecks.equalTo(urlCheck)
                     .orderBy()

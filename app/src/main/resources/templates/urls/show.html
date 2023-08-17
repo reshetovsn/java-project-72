@@ -43,7 +43,7 @@
                     <th class="col-2">Дата проверки</th>
                 </tr></thead>
                 <tbody>
-                <tr th:each="urlCheck : ${url.getUrlChecks()}" th:object="${urlCheck}">
+                <tr th:each="urlCheck : ${urlChecks}" th:object="${urlCheck}">
                     <td th:text="${urlCheck.getId()}"></td>
                     <td th:text="${urlCheck.getStatusCode()}"></td>
                     <td th:text="${urlCheck.getTitle()}"></td>

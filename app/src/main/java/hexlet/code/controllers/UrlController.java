@@ -96,6 +96,7 @@ public final class UrlController {
                 .id.asc()
                 .findList();
 
+        ctx.attribute("urlChecks", urlChecks);
         ctx.attribute("url", url);
         ctx.render("urls/show.html");
     };
