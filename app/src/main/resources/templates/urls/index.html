@@ -21,15 +21,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="url : ${urls}" th:object="${url}">
-                <td th:text="${url.getId()}"></td>
+            <tr th:each="url : ${urls}">
+                <td th:text="*{url.getId()}"></td>
                 <td>
-                    <a th:href="@{/urls/{id}(id=${url.getId()})}"
-                       th:text="${url.getName()}">
+                    <a th:href="@{/urls/{id}(id=*{url.getId()})}"
+                       th:text="*{url.getName()}">
                     </a>
                 </td>
-                <td th:text="${url.getUrlChecks().isEmpty() ? '' : url.getUrlChecks().get(url.getUrlChecks().size() - 1).getCreatedAt()}"></td>
-                <td th:text="${url.getUrlChecks().isEmpty() ? '' : url.getUrlChecks().get(url.getUrlChecks().size() - 1).getStatusCode()}"></td>
+                <td th:text="*{url.getUrlChecks().isEmpty() ? '' : url.getUrlChecks().get(url.getUrlChecks().size() - 1).getCreatedAt()}"></td>
+                <td th:text="*{url.getUrlChecks().isEmpty() ? '' : url.getUrlChecks().get(url.getUrlChecks().size() - 1).getStatusCode()}"></td>
             </tr>
             </tbody>
         </table>
