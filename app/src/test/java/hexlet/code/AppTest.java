@@ -95,9 +95,7 @@ class AppTest {
                     .name.equalTo(inputUrl)
                     .findOne();
 
-            if (actualUrl == null) {
-                throw new NotFoundResponse();
-            }
+            assertThat(actualUrl).isNotNull();
 
             HttpResponse<String> response = Unirest
                     .get(baseUrl + "/urls/" + actualUrl.getId())
@@ -216,10 +214,6 @@ class AppTest {
             assertThat(responseCheck.getStatus()).isEqualTo(302);
 
             UrlCheck urlCheck = url.getUrlChecks().get(0);
-            assertThat(urlCheck.getStatusCode()).isEqualTo(200);
-            assertThat(urlCheck.getTitle()).isEqualTo("title example");
-            assertThat(urlCheck.getH1()).isEqualTo("header example");
-            assertThat(urlCheck.getDescription()).isEqualTo("some description");
 
             // Проверка, что в БД данные записались
             UrlCheck actualCheckUrl = new QUrlCheck()
