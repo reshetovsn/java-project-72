@@ -63,7 +63,7 @@ public final class UrlController {
 
     public static Handler listUrls = ctx -> {
         int page = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
-        int rowsPerPage = 5;
+        int rowsPerPage = 10;
         int offset = (page - 1) * rowsPerPage;
 
         PagedList<Url> pagedUrls = new QUrl()
