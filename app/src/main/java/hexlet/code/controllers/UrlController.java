@@ -17,6 +17,8 @@ import org.jsoup.nodes.Element;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public final class UrlController {
 
@@ -62,20 +64,29 @@ public final class UrlController {
 
     public static Handler listUrls = ctx -> {
         int page = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
-        int rowsPerPage = 10;
+        int rowsPerPage = 5;
         int offset = (page - 1) * rowsPerPage;
 
         PagedList<Url> pagedUrls = new QUrl()
                 .setFirstRow(offset)
                 .setMaxRows(rowsPerPage)
                 .orderBy()
-                .id.asc()
+                    .id.asc()
                 .findPagedList();
 
         List<Url> urls = pagedUrls.getList();
 
+        int lastPage = pagedUrls.getTotalPageCount() + 1;
+        int currentPage = pagedUrls.getPageIndex() + 1;
+        List<Integer> pages = IntStream
+                .range(1, lastPage)
+                .boxed()
+                .toList();
+
         ctx.attribute("urls", urls);
         ctx.attribute("page", page);
+        ctx.attribute("pages", pages);
+        ctx.attribute("currentPage", currentPage);
         ctx.render("urls/index.html");
     };
 
